@@ -15,15 +15,27 @@
         <p class="mt-2 text-center text-sm text-gray-600">
           Or
           {{ " " }}
-          <a @click="$router.push('/register')" href="/register" class="font-medium text-red-600 hover:text-black underline">
+          <a
+            @click="$router.push('/register')"
+            href=""
+            class="font-medium text-red-600 hover:text-black underline"
+          >
             Register to DeviceDieter
           </a>
         </p>
       </div>
-      <form class="mt-8 space-y-6" action="#" method="POST">
+      <div class="mt-8 space-y-6">
         <input type="hidden" name="remember" value="true" />
-        <Form :store="getFormData"> </Form>
-      </form>
+        <Form
+          @ready="
+            (UserData) => {
+              Value.push(UserData);
+            }
+          "
+          :store="getFormData"
+        >
+        </Form>
+      </div>
     </div>
   </div>
 </template>
@@ -32,9 +44,14 @@
 import Form from "@/components/Form";
 import { mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      Value: [],
+    };
+  },
   name: "Login",
   computed: mapGetters(["getFormData"]),
-  components: { Form},
+  components: { Form },
 };
 </script>
 
