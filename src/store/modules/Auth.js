@@ -16,16 +16,17 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit("auth_request");
       axios({
-        url: "https://api.somedomain.de/login",
+        url: "https://api.devicedieter.de/login",
         data: user,
         method: "POST",
       })
         .then((response) => {
           const token = response.data.token;
           const user = response.data.user;
+          const expiration = response.data.expirationDate;
           localStorage.setItem("token", token);
           axios.defaults.headers.common["Authorization"] = token;
-          commit("auth_success", token, user);
+          commit("auth_success", token, user, expiration);
           resolve(response);
         })
         .catch((error) => {
@@ -35,6 +36,27 @@ const actions = {
           console.log(user);
           commit("auth_error");
           localStorage.removeItem("token");
+          reject(error);
+        });
+    });
+  },
+  register({ commit }, user) {
+    return new Promise((resolve, reject) => {
+      commit("auth_request");
+      axios({
+        url: "https://api.devicedieter.de/register",
+        data: user,
+        method: "POST",
+      })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          console.log(user);
+          commit("auth_error");
           reject(error);
         });
     });
@@ -53,10 +75,11 @@ const mutations = {
   auth_request(state) {
     state.status = "loading";
   },
-  auth_success(state, token, user) {
+  auth_success(state, token, user, expiration) {
     state.status = "success";
     state.token = token;
     state.user = user;
+    state.expirationDate = expiration;
   },
   auth_error(state) {
     state.status = "error";

@@ -1,13 +1,16 @@
 <template>
-  <div class="relative w-32 h-32">
-    <div class="inset-y-0 left-0">
-      <button
-        class="bg-red-600 text-white font-bold py-2 px-4 rounded-full"
-        @click="$router.push('/login')"
+  <div class="grid place-items-center h-screen">
+    <div class="max-w-max w-full space-x-20">
+      <router-link
+        class="bg-redbutton py-4 px-6 rounded-2xl font-bold text-2xl text-white"
+        to="/login"
+        >Login</router-link
       >
-        Login
-      </button>
-      <button @click="$router.push('/register')">Register</button>
+      <router-link
+        class="bg-redbutton py-4 px-6 rounded-2xl font-bold text-2xl text-white"
+        to="/register"
+        >Register</router-link
+      >
     </div>
   </div>
 </template>

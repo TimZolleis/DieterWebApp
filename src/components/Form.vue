@@ -1,9 +1,8 @@
 <template>
   <div>
-    Username: {{ UserData.username }} Password: {{ UserData.password }}
     <div v-for="FormData in store" :key="FormData.id">
       <div class="">
-        <div class="py-0.5">
+        <div class="py-2">
           <label for="{{FormData.id}}" class="sr-only">{{
             FormData.placeholder
           }}</label>
@@ -12,35 +11,44 @@
             name="email"
             :type="FormData.type"
             autocomplete="{{FormData.type}}"
-            required=""
-            class="appearance-none rounded-none relative block w-full px-3 p py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-red-500 focus:z-100 sm:text-sm"
+            class="rounded-2xl relative block w-full px-3 p py-3.5 placeholder-formtext text-white bg-formbackround focus:outline-none border-redbutton border-opacity-0 border-2 focus:border-opacity-100"
             :placeholder="FormData.placeholder"
             v-model="UserData[FormData.id]"
           />
         </div>
       </div>
     </div>
+    <p v-if="invalid" class="text-redbutton">Invalid credentials!</p>
     <div class="py-6 drop-shadow-2xl">
       <button
         @click="handleSubmit()"
-        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        class="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-2xl text-white bg-redbutton hover:bg-redbutton hover:shadow-inner focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
-        Sign in
+        <label v-if="!loading">Sign in</label>
+        <label v-if="loading">Loading...</label>
       </button>
     </div>
   </div>
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   name: "Form",
   computed: {
+    authError() {
+      return store.state.auth_error();
+    },
     currentRouteName() {
       return this.$route.name.toLowerCase();
     },
   },
   data() {
     return {
+      borderColor2: "red",
+      invalid: false,
+      loading: false,
       UserData: {
         username: "",
         email: "",
@@ -53,15 +61,15 @@ export default {
   methods: {
     handleSubmit() {
       let text = this.currentRouteName;
-      console.log(text);
       if (text.includes("login")) {
         let username = this.UserData.username;
         let password = this.UserData.password;
         this.$store
           .dispatch("login", { username, password })
           .then(() => this.$router.push("/"))
-          .catch((err) => console.log(err));
-      } else if (text.includes("Register")) {
+          .catch((err) => this.handleError(err));
+      } else if (text.includes("register")) {
+        console.log(text);
         let username = this.UserData.username;
         let email = this.UserData.email;
         let firstName = this.UserData.firstName;

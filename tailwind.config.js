@@ -26,6 +26,11 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
+      dietergray: "#12131F",
+      boxcolor: "#1B1D30",
+      formbackround: "#24273E",
+      redbutton: "#FC3955",
+      formtext: "#6E7389",
     },
     spacing: {
       px: "1px",
