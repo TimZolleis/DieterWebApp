@@ -18,6 +18,7 @@ const routes = [
     name: "Login",
     component: Login,
     meta: {
+      title: "Login to Dieter",
       public: true,
     },
   },
@@ -26,6 +27,7 @@ const routes = [
     name: "Register",
     component: Register,
     meta: {
+      title: "Register to Dieter",
       public: true,
     },
   },
@@ -39,6 +41,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.public)) {
     next();

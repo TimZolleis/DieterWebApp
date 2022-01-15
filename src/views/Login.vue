@@ -15,8 +15,7 @@
           {{ " " }}
           <a
             @click="$router.push('/register')"
-            href=""
-            class="font-medium text-redbutton hover:bold underline"
+            class="font-medium text-redbutton hover:bold underline cursor-pointer"
           >
             Register to Dieter
           </a>
@@ -31,6 +30,7 @@
             }
           "
           :store="getFormData"
+          :buttontext="'Login'"
         >
         </Form>
       </div>

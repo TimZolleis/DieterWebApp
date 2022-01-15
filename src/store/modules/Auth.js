@@ -1,4 +1,5 @@
 import axios from "axios";
+import SetUser from "@/JS/SetUser";
 
 const state = {
   status: "",
@@ -23,6 +24,8 @@ const actions = {
           const token = response.data.token;
           const user = response.data.user;
           const expirationDate = response.data.expirationDate;
+          let setUser = new SetUser
+          setUser.setData(token);
           localStorage.setItem("token", token);
           localStorage.setItem("expirationDate", expirationDate);
           console.log(localStorage.getItem("token"));

@@ -20,21 +20,19 @@
     </div>
     <div
       v-if="error"
-      class="rounded-xl bold border bg-redbutton bg-opacity-10 mx-auto border-redbutton text-center text-white py-1"
+      class="rounded-xl text-sm bold border text-center bg-redbutton bg-opacity-10 mx-auto border-redbutton px-4 text-white py-1"
     >
       <ul v-for="error in errors" :key="error">
-        {{
-          error
-        }}
+        <li>{{ error }}</li>
       </ul>
     </div>
-    <div class="py-6 drop-shadow-2xl">
+    <div class="py-6 hover:scale-125">
       <button
         @click="handleSubmit()"
-        class="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-2xl text-white bg-redbutton hover:bg-blue-500 hover:shadow-inner focus:bg-green-500"
+        class="group transform transition duration-500 hover:scale-105 relative hover:bg-green-500 w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-2xl text-white bg-redbutton focus:bg-green-500"
       >
-        <label v-if="!loading">Sign in</label>
-        <label v-if="loading">Loading...</label>
+        <label v-if="!loading">{{ buttontext }}</label>
+        <label v-if="loading" :aria-disabled="loading">Loading...</label>
       </button>
     </div>
   </div>
@@ -45,6 +43,7 @@ import store from "@/store";
 
 export default {
   name: "Form",
+
   computed: {
     authError() {
       return store.state.auth_error();
@@ -72,19 +71,23 @@ export default {
   },
   methods: {
     handleSubmit() {
+      this.loading = true;
       this.errors.splice(0);
       if (this.currentRouteName.includes("login")) {
         if (!this.UserData.username) {
           this.error = true;
           this.errors.push("Username required");
+          this.loading = false;
         }
         if (!this.UserData.password) {
           this.error = true;
           this.errors.push("Password required");
+          this.loading = false;
         }
         if (this.UserData.username && this.UserData.password) {
           let username = this.UserData.username;
           let password = this.UserData.password;
+          this.loading = true;
           this.$store
             .dispatch("login", { username, password })
             .then(() => this.$router.push("/"))
@@ -94,26 +97,32 @@ export default {
         if (!this.UserData.username) {
           this.error = true;
           this.errors.push("Username required");
+          this.loading = false;
         }
         if (!this.UserData.email) {
           this.error = true;
           this.errors.push("Email required");
+          this.loading = false;
         }
         if (!this.UserData.firstName) {
           this.error = true;
           this.errors.push("First name required");
+          this.loading = false;
         }
         if (!this.UserData.lastName) {
           this.error = true;
           this.errors.push("Last name required");
+          this.loading = false;
         }
         if (!this.UserData.password) {
           this.error = true;
           this.errors.push("Please enter a password");
+          this.loading = false;
         }
         if (!this.UserData.passwordComparison) {
           this.error = true;
           this.errors.push("Please repeat your password");
+          this.loading = false;
         }
         if (
           this.UserData.username &&
@@ -123,6 +132,7 @@ export default {
           this.UserData.password &&
           this.UserData.passwordComparison
         ) {
+          this.loading = true;
           let username = this.UserData.username;
           let email = this.UserData.email;
           let firstName = this.UserData.firstName;
@@ -137,18 +147,25 @@ export default {
                 lastName,
                 password,
               })
-              .then(() => this.$router.push("/"))
+              .then(() => this.$emit("registered", email))
               .catch((err) => console.log(err));
           } else {
             this.error = true;
+            this.loading = false;
             this.errors.push("Passwords do not match!");
           }
         }
       }
     },
+    handleError(err) {
+      err.response.data;
+      console.log(err);
+      this.$emit("failed", err);
+    },
   },
   props: {
     store: Function,
+    buttontext: String,
   },
 };
 </script>
