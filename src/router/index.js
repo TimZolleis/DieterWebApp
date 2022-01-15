@@ -3,7 +3,6 @@ import Home from "../views/Home.vue";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
 import Intern from "@/views/Intern";
-import store from "@/store";
 import axios from "axios";
 const routes = [
   {
@@ -45,12 +44,15 @@ router.beforeEach((to, from, next) => {
     next();
   } else if (!localStorage.getItem("token")) {
     next("/login");
+  } else if (localStorage.getItem("expirationDate") < Date.now()) {
+    next("/login");
   } else {
-    axios({
-      url: "https://api.devicedieter.de/auth",
-      data: store.state.token,
-      method: "POST",
-    })
+    axios
+      .get("https://api.devicedieter.de/auth", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((response) => {
         console.log(response);
         next();

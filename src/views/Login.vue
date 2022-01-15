@@ -9,9 +9,7 @@
           alt=""
         />
         <h2 class="mt-6 text-center text-3xl font-bold text-white">Login to</h2>
-        <h2 class="text-center text-5xl font-bold text-redbutton">
-          DeviceDieter
-        </h2>
+        <h2 class="text-center text-5xl font-bold text-redbutton">Dieter</h2>
         <p class="mt-2 text-center text-sm text-formtext">
           You do not have an account?
           {{ " " }}
@@ -20,7 +18,7 @@
             href=""
             class="font-medium text-redbutton hover:bold underline"
           >
-            Register to DeviceDieter
+            Register to Dieter
           </a>
         </p>
       </div>

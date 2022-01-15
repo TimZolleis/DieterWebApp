@@ -73,8 +73,7 @@ export default {
   methods: {
     handleSubmit() {
       this.errors.splice(0);
-      let text = this.currentRouteName;
-      if (text.includes("login")) {
+      if (this.currentRouteName.includes("login")) {
         if (!this.UserData.username) {
           this.error = true;
           this.errors.push("Username required");
@@ -91,7 +90,7 @@ export default {
             .then(() => this.$router.push("/"))
             .catch((err) => this.handleError(err));
         }
-      } else if (text.includes("register")) {
+      } else if (this.currentRouteName.includes("register")) {
         if (!this.UserData.username) {
           this.error = true;
           this.errors.push("Username required");
@@ -124,7 +123,6 @@ export default {
           this.UserData.password &&
           this.UserData.passwordComparison
         ) {
-          console.log(text);
           let username = this.UserData.username;
           let email = this.UserData.email;
           let firstName = this.UserData.firstName;
@@ -142,7 +140,8 @@ export default {
               .then(() => this.$router.push("/"))
               .catch((err) => console.log(err));
           } else {
-            (this.error = true), this.errors.push("Passwords do not match!");
+            this.error = true;
+            this.errors.push("Passwords do not match!");
           }
         }
       }

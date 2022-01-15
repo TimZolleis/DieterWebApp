@@ -11,17 +11,14 @@
         <h2 class="mt-6 text-center text-3xl font-bold text-white">
           Register to
         </h2>
-        <h2 class="text-center text-5xl font-extrabold text-redbutton">
-          DeviceDieter
-        </h2>
+        <h2 class="text-center text-5xl font-bold text-redbutton">Dieter</h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           Already registered?
           <a
             @click="$router.push('/login')"
-            href="/login"
             class="font-medium text-redbutton hover:underline"
           >
-            Login to DeviceDieter
+            Login to Dieter
           </a>
         </p>
       </div>

@@ -8,7 +8,6 @@ const state = {
 
 const getters = {
   isLoggedIn: (state) => !!state.token,
-  authStatus: (state) => state.status,
 };
 
 const actions = {
@@ -23,17 +22,15 @@ const actions = {
         .then((response) => {
           const token = response.data.token;
           const user = response.data.user;
-          const expiration = response.data.expirationDate;
+          const expirationDate = response.data.expirationDate;
           localStorage.setItem("token", token);
+          localStorage.setItem("expirationDate", expirationDate);
+          console.log(localStorage.getItem("token"));
           axios.defaults.headers.common["Authorization"] = token;
-          commit("auth_success", token, user, expiration);
+          commit("auth_success", token, user, expirationDate);
           resolve(response);
         })
         .catch((error) => {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          console.log(user);
           commit("auth_error");
           localStorage.removeItem("token");
           reject(error);
@@ -52,10 +49,6 @@ const actions = {
           resolve(response);
         })
         .catch((error) => {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          console.log(user);
           commit("auth_error");
           reject(error);
         });
