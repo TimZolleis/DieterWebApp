@@ -15,7 +15,7 @@
         <p class="mt-2 text-center text-sm text-gray-600">
           Already registered?
           <a
-            @click="$router.push('/login')"
+            @click="$router.push('/Authentification')"
             class="font-medium text-redbutton hover:underline cursor-pointer"
           >
             Login to Dieter
@@ -58,7 +58,7 @@
         <p class="mt-2 text-center text-sm text-gray-600 mt-5">
           After verifying you can
           <a
-            @click="$router.push('/login')"
+            @click="$router.push('/Authentification')"
             class="font-medium text-green-500 hover:underline"
           >
             Login to Dieter

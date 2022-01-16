@@ -1,5 +1,4 @@
 import axios from "axios";
-import SetUser from "@/JS/SetUser";
 
 const state = {
   status: "",
@@ -24,8 +23,8 @@ const actions = {
           const token = response.data.token;
           const user = response.data.user;
           const expirationDate = response.data.expirationDate;
-          let setUser = new SetUser
-          setUser.setData(token);
+          // let setUser = new SetUser();
+          // setUser.setData(token);
           localStorage.setItem("token", token);
           localStorage.setItem("expirationDate", expirationDate);
           console.log(localStorage.getItem("token"));
@@ -68,8 +67,14 @@ const actions = {
 };
 
 const mutations = {
-  auth_request(state) {
+  request(state) {
     state.status = "loading";
+  },
+  request_pending(state) {
+    state.status = "pending";
+  },
+  request_error(state) {
+    state.status = "reqerror";
   },
   auth_success(state, token, user, expiration) {
     state.status = "success";

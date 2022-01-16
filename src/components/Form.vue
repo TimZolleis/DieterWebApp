@@ -40,6 +40,7 @@
 
 <script>
 import store from "@/store";
+import ValidateForm from "@/JS/Authentification/formActions/ValidateForm";
 
 export default {
   name: "Form",
@@ -70,6 +71,18 @@ export default {
     };
   },
   methods: {
+    handleSubmit2() {
+      //set button to load status
+      this.loading = true;
+      //initialize form validation
+      let validation = new ValidateForm();
+      //validate current user data based on current route
+      validation.validate(this.UserData, this.currentRouteName);
+      //get potential errors
+      if (validation.getErrors().length > 0) {
+        this.errors = validation.getErrors();
+      }
+    },
     handleSubmit() {
       this.loading = true;
       this.errors.splice(0);
