@@ -4,6 +4,7 @@ const state = {
   status: "",
   token: localStorage.getItem("token") || "",
   user: {},
+  userStatus: "",
 };
 
 const getters = {
@@ -67,9 +68,7 @@ const actions = {
 };
 
 const mutations = {
-  request(state) {
-    state.status = "loading";
-  },
+  request(state, payload) {},
   request_pending(state) {
     state.status = "pending";
   },

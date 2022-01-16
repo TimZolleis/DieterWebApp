@@ -2,7 +2,6 @@ import store from "@/store";
 import axios from "axios";
 
 export default class AxiosFunctions {
-  handleLogin() {}
   static handleRegister(user) {
     return new Promise((resolve, reject) => {
       store.commit("request");

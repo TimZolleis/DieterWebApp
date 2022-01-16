@@ -1,4 +1,4 @@
-import AxiosFunctions from "@/JS/Authentification/formActions/AxiosFunctions";
+import store from "@/store";
 
 export default class validateForm {
   validate(user, route) {
@@ -8,14 +8,13 @@ export default class validateForm {
     if (route.includes("login")) {
       this.login();
       if (this.errors.length <= 0) {
-        //initialize login via axios
-        AxiosFunctions.handleLogin();
+        store.commit("set_user_status", "validated");
       }
     }
     if (route.includes("register")) {
       this.register();
       if (this.errors.length <= 0) {
-        AxiosFunctions.handleRegister();
+        store.commit("set_user_status", "validated");
       }
     }
   }
