@@ -14,7 +14,7 @@ const routes = [
     },
   },
   {
-    path: "/Authentification",
+    path: "/login",
     name: "Login",
     component: Login,
     meta: {
@@ -46,9 +46,9 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.public)) {
     next();
   } else if (!localStorage.getItem("token")) {
-    next("/Authentification");
+    next("/login");
   } else if (localStorage.getItem("expirationDate") < Date.now()) {
-    next("/Authentification");
+    next("/login");
   } else {
     axios
       .get("https://api.devicedieter.de/auth", {
@@ -62,7 +62,7 @@ router.beforeEach((to, from, next) => {
       })
       .catch((error) => {
         console.log(error);
-        next("/Authentification");
+        next("/login");
       });
   }
 });

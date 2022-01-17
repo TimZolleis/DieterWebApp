@@ -1,8 +1,18 @@
 import store from "@/store";
 import axios from "axios";
+import { error } from "autoprefixer/lib/utils";
 
-export default class AxiosFunctions {
-  static handleRegister(user) {
+export default new (class AxiosFunctions {
+  handleAction(user, route) {
+    if (route.includes("register")) {
+      this.handleRegister(user);
+    }
+    if (route.includes("login")) {
+      this.handleLogin(user);
+    }
+  }
+
+  handleRegister(user) {
     return new Promise((resolve, reject) => {
       store.commit("request");
       axios({
@@ -11,18 +21,21 @@ export default class AxiosFunctions {
         method: "POST",
       })
         .then((response) => {
-          store.commit("request_pending");
+          console.log(response.data.token);
+          console.log(response.data.message);
+          store.commit("set_user_status", "request_pending");
           resolve(response);
         })
         .catch((error) => {
-          store.commit("request_error");
+          store.commit("set_user_status", "error");
+          store.commit("set_error", "invalid");
           reject(error);
           //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
         });
     });
   }
 
-  static handleLogin(user) {
+  handleLogin(user) {
     return new Promise((resolve, reject) => {
       store.commit("request");
       axios({
@@ -31,14 +44,21 @@ export default class AxiosFunctions {
         method: "POST",
       })
         .then((response) => {
-          store.commit("auth_success");
+          this.setData(response);
+          console.log("Login 1");
+          store.commit("set_user_status", "auth_success");
           resolve(response);
         })
         .catch((error) => {
-          store.commit("auth_error");
+          store.commit("set_user_status", "error");
+          store.commit("set_error", "invalid");
           reject(error);
           //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
         });
     });
   }
-}
+  setData(response) {
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("expirationDate", response.data.expirationDate);
+  }
+})();

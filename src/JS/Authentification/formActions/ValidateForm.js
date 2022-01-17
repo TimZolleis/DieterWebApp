@@ -1,6 +1,6 @@
 import store from "@/store";
 
-export default class validateForm {
+export default new (class validateForm {
   validate(user, route) {
     this.user = user;
     this.route = route;
@@ -51,4 +51,4 @@ export default class validateForm {
   getErrors() {
     return this.errors;
   }
-}
+})();

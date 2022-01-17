@@ -1,5 +1,5 @@
 const state = {
-  FormData: [
+  getLoginData: [
     {
       id: "username",
       name: "username",
@@ -62,7 +62,7 @@ const state = {
 };
 
 const getters = {
-  getFormData: (state) => state.FormData,
+  getLoginData: (state) => state.getLoginData,
   getRegisterData: (state) => state.Register,
 };
 

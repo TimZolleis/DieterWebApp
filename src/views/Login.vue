@@ -23,23 +23,23 @@
       </div>
       <div class="mt-8 space-y-6">
         <input type="hidden" name="remember" value="true" />
-        <Form
+        <form-object
           @ready="
             (UserData) => {
               Value.push(UserData);
             }
           "
-          :store="getFormData"
+          :store="getLoginData"
           :buttontext="'Login'"
         >
-        </Form>
+        </form-object>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Form from "@/components/Form";
+import formObject from "@/components/formObject";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -48,8 +48,8 @@ export default {
     };
   },
   name: "Login",
-  computed: mapGetters(["getFormData"]),
-  components: { Form },
+  computed: mapGetters(["getLoginData"]),
+  components: { formObject },
 };
 </script>
 

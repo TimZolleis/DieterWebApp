@@ -15,7 +15,7 @@
         <p class="mt-2 text-center text-sm text-gray-600">
           Already registered?
           <a
-            @click="$router.push('/Authentification')"
+            @click="$router.push('/login')"
             class="font-medium text-redbutton hover:underline cursor-pointer"
           >
             Login to Dieter
@@ -24,7 +24,7 @@
       </div>
       <div class="mt-8 space-y-6">
         <input type="hidden" name="remember" value="true" />
-        <Form
+        <form-object
           @registered="registerSuccess"
           @failed="handleError"
           @ready="
@@ -34,7 +34,7 @@
           "
           :store="getRegisterData"
           :buttontext="'Register'"
-        ></Form>
+        ></form-object>
       </div>
     </div>
   </div>
@@ -58,7 +58,7 @@
         <p class="mt-2 text-center text-sm text-gray-600 mt-5">
           After verifying you can
           <a
-            @click="$router.push('/Authentification')"
+            @click="$router.push('/login')"
             class="font-medium text-green-500 hover:underline"
           >
             Login to Dieter
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import Form from "@/components/Form";
+import formObject from "@/components/formObject";
 import { mapGetters } from "vuex";
 export default {
   name: "Register",
@@ -139,7 +139,7 @@ export default {
     },
   },
   components: {
-    Form,
+    formObject,
   },
 };
 </script>
