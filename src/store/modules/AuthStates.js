@@ -1,12 +1,14 @@
+import validateForm from "@/JS/Authentification/formActions/ValidateForm";
+
 const state = {
   userState: "",
-  actionState: "idle",
+  loggedIn: false,
   error: [],
 };
 
 const getters = {
-  getUserState: (state) => state.userStatus,
-  getActionState: (state) => state.actionState,
+  getUserState: (state) => state.userState,
+  getLoginState: (state) => state.loggedIn,
   getError: (state) => state.error,
 };
 
@@ -14,7 +16,7 @@ const actions = {};
 
 const mutations = {
   set_user_status(state, payload) {
-    state.userStatus = payload;
+    state.userState = payload;
   },
   set_action_state(state, payload) {
     state.actionState = payload;

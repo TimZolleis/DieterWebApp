@@ -23,16 +23,7 @@
       </div>
       <div class="mt-8 space-y-6">
         <input type="hidden" name="remember" value="true" />
-        <form-object
-          @ready="
-            (UserData) => {
-              Value.push(UserData);
-            }
-          "
-          :store="getLoginData"
-          :buttontext="'Login'"
-        >
-        </form-object>
+        <form-object :store="getLoginData" :buttontext="'Login'"> </form-object>
       </div>
     </div>
   </div>

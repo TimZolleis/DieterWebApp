@@ -41,48 +41,28 @@
 <script>
 import store from "@/store";
 import ValidateForm from "@/JS/Authentification/formActions/ValidateForm";
-import { mapGetters } from "vuex";
-import { mapState } from "vuex";
 import AxiosFunctions from "@/JS/Authentification/formActions/AxiosFunctions";
+import { loading, success, valid } from "@/JS/models/loadingStates";
 
 export default {
   name: "Form",
 
-  computed: mapState(["userState"]),
-  currentRouteName() {
-    return this.$route.name.toLowerCase();
+  computed: {
+    currentRouteName() {
+      return this.$route.name.toLowerCase();
+    },
+    userState() {
+      return store.getters.getUserState;
+    },
+    loginState() {
+      return store.getters.getLoginState;
+    },
   },
-  created() {
-    this.unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (mutation.type === "set_user_status") {
-        if (store.getters.getUserState === "loading") {
-          this.loading = true;
-          ValidateForm.validate(this.UserData, this.$route.name.toLowerCase());
-        }
-        if (store.getters.getUserState === "validated") {
-          delete this.UserData["passwordComparison"];
-          AxiosFunctions.handleAction(
-            this.UserData,
-            this.$route.name.toLowerCase()
-          );
-        }
-        if (store.getters.getUserState === "request_pending") {
-          this.$emit("registered", this.UserData.email);
-        }
-        if (store.getters.getUserState === "auth_success") {
-          this.$router.push("/");
-        }
-        if (store.getters.getUserState === "error") {
-          if (store.getters.getError === "invalid") {
-            this.errors = store.state.error;
-          }
-          this.error = true;
-        }
-      }
-    });
-  },
-  beforeUnmount() {
-    this.unsubscribe();
+  watch: {
+    loadingStatus(state2) {
+      this.event();
+      console.log("LoadingState:", state2);
+    },
   },
   data() {
     return {
@@ -100,8 +80,35 @@ export default {
     };
   },
   methods: {
+    async loginFunction() {
+      try {
+        if (this.userState === loading) {
+          console.log("Validating Form");
+          await ValidateForm.validate(this.UserData, this.currentRouteName);
+        }
+        if (this.userState === valid) {
+          await AxiosFunctions.handleAction(
+            this.UserData,
+            this.currentRouteName
+          );
+        }
+        if (this.userState === success) {
+          console.log("success");
+          await this.$router.push("/");
+        }
+      } catch (ex) {
+        console.log(ex);
+      }
+    },
     buttonClick() {
-      store.commit("set_user_status", "loading");
+      store.commit("set_user_status", loading);
+      this.loading = true;
+      this.event();
+    },
+    event() {
+      if (!store.getters.getLoginState) {
+        this.loginFunction();
+      }
     },
   },
   props: {

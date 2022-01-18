@@ -13,49 +13,44 @@ export default new (class AxiosFunctions {
   }
 
   handleRegister(user) {
-    return new Promise((resolve, reject) => {
-      store.commit("request");
-      axios({
-        url: "https://api.devicedieter.de/register",
-        data: user,
-        method: "POST",
+    store.commit("request");
+    axios({
+      url: "https://api.devicedieter.de/register",
+      data: user,
+      method: "POST",
+    })
+      .then((response) => {
+        console.log(response.data.token);
+        console.log(response.data.message);
+        store.commit("set_user_status", "request_pending");
       })
-        .then((response) => {
-          console.log(response.data.token);
-          console.log(response.data.message);
-          store.commit("set_user_status", "request_pending");
-          resolve(response);
-        })
-        .catch((error) => {
-          store.commit("set_user_status", "error");
-          store.commit("set_error", "invalid");
-          reject(error);
-          //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
-        });
-    });
+      .catch((error) => {
+        store.commit("set_user_status", "error");
+        store.commit("set_error", "invalid");
+
+        //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
+      });
   }
 
   handleLogin(user) {
-    return new Promise((resolve, reject) => {
-      store.commit("request");
-      axios({
-        url: "https://api.devicedieter.de/login",
-        data: user,
-        method: "POST",
+    console.log("(Axios) logging in");
+    store.commit("request");
+    axios({
+      url: "https://api.devicedieter.de/login",
+      data: user,
+      method: "POST",
+    })
+      .then((response) => {
+        this.setData(response);
+        console.log("Commit-Login");
+        console.log(response.data.token);
+        store.commit("set_user_status", "loggedin");
+        store.commit("set_user_status", "auth_success");
       })
-        .then((response) => {
-          this.setData(response);
-          console.log("Login 1");
-          store.commit("set_user_status", "auth_success");
-          resolve(response);
-        })
-        .catch((error) => {
-          store.commit("set_user_status", "error");
-          store.commit("set_error", "invalid");
-          reject(error);
-          //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
-        });
-    });
+      .catch((error) => {
+        store.commit("set_user_status", "error");
+        //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
+      });
   }
   setData(response) {
     localStorage.setItem("token", response.data.token);
