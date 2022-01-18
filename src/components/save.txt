@@ -1,6 +1,6 @@
  created() {
     this.unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (mutation.type === "set_user_status") {
+      if (mutation.type === "set_user_state") {
         if (store.getters.getUserState === "loading") {
           console.log("loadingState");
           this.loading = true;

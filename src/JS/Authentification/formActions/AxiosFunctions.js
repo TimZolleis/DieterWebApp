@@ -1,31 +1,31 @@
 import store from "@/store";
 import axios from "axios";
 import { error } from "autoprefixer/lib/utils";
+import { data } from "autoprefixer";
 
 export default new (class AxiosFunctions {
-  handleAction(user, route) {
+  async handleAction(user, route) {
     if (route.includes("register")) {
-      this.handleRegister(user);
+      await this.handleRegister(user);
     }
     if (route.includes("login")) {
-      this.handleLogin(user);
+      await this.handleLogin(user);
     }
   }
 
-  handleRegister(user) {
+  async handleRegister(user) {
     store.commit("request");
-    axios({
+    await axios({
       url: "https://api.devicedieter.de/register",
       data: user,
       method: "POST",
     })
       .then((response) => {
-        console.log(response.data.token);
-        console.log(response.data.message);
-        store.commit("set_user_status", "request_pending");
+        localStorage.setItem("token", response.data.token);
+        store.commit("set_user_state", "request_pending");
       })
       .catch((error) => {
-        store.commit("set_user_status", "error");
+        store.commit("set_user_state", "error");
         store.commit("set_error", "invalid");
 
         //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
@@ -35,20 +35,21 @@ export default new (class AxiosFunctions {
   handleLogin(user) {
     console.log("(Axios) logging in");
     store.commit("request");
-    axios({
+    return axios({
       url: "https://api.devicedieter.de/login",
       data: user,
       method: "POST",
     })
       .then((response) => {
         this.setData(response);
-        console.log("Commit-Login");
-        console.log(response.data.token);
-        store.commit("set_user_status", "loggedin");
-        store.commit("set_user_status", "auth_success");
+        store.commit("set_login_state", true);
+        store.commit("set_user_state", "auth_success");
       })
       .catch((error) => {
-        store.commit("set_user_status", "error");
+        if (error.response.data.code.includes("INVALID_CREDENTIALS")) {
+          store.commit("set_error", ["Fehlerhafte Zugangsdaten!"]);
+        }
+        store.commit("set_user_state", "error");
         //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
       });
   }

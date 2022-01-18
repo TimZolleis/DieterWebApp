@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const state = {
-  status: "",
+  // status: "",
   token: localStorage.getItem("token") || "",
   user: {},
   userStatus: "",
