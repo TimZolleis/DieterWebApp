@@ -1,4 +1,5 @@
 import store from "@/store";
+import { authError, valid } from "@/JS/models/loadingStates";
 
 export default new (class validateForm {
   validate(user, route) {
@@ -9,16 +10,15 @@ export default new (class validateForm {
     if (route.includes("login")) {
       this.login();
       if (this.ready) {
-        store.commit("set_user_state", "valid");
+        store.commit("set_user_state", valid);
       } else {
-        store.commit("set_user_state", "error");
+        store.commit("set_user_state", authError);
         store.commit("set_error", this.errors);
       }
     } else if (route.includes("register")) {
-      console.log("validated 2");
       this.register();
       if (this.errors.length > 0) {
-        store.commit("set_user_state", "error");
+        store.commit("set_user_state", authError);
         store.commit("set_error", this.errors);
       }
     }

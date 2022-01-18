@@ -42,7 +42,13 @@
 import store from "@/store";
 import ValidateForm from "@/JS/Authentification/formActions/ValidateForm";
 import AxiosFunctions from "@/JS/Authentification/formActions/AxiosFunctions";
-import { loading, success, valid } from "@/JS/models/loadingStates";
+import {
+  authError,
+  authSuccess,
+  loading,
+  success,
+  valid,
+} from "@/JS/models/loadingStates";
 import { mapState } from "vuex";
 
 export default {
@@ -80,13 +86,11 @@ export default {
   },
   methods: {
     handleValue(val) {
-      if (val === "loading") {
+      if (val === loading) {
         this.loading = true;
-        console.log("loading");
         ValidateForm.validate(this.UserData, this.$route.name.toLowerCase());
-        console.log(store.getters.getError);
       }
-      if (val === "error") {
+      if (val === authError) {
         this.loading = false;
         this.error = true;
         this.errors = store.getters.getError;
@@ -96,11 +100,13 @@ export default {
           this.UserData,
           this.$route.name.toLowerCase()
         );
-        console.log("valid");
+      }
+      if (val === authSuccess) {
+        this.$router.push("/");
       }
     },
     buttonClick() {
-      store.commit("set_user_state", "loading");
+      store.commit("set_user_state", loading);
     },
   },
   props: {

@@ -2,6 +2,7 @@ import store from "@/store";
 import axios from "axios";
 import { error } from "autoprefixer/lib/utils";
 import { data } from "autoprefixer";
+import { authError, authSuccess } from "@/JS/models/loadingStates";
 
 export default new (class AxiosFunctions {
   async handleAction(user, route) {
@@ -25,7 +26,7 @@ export default new (class AxiosFunctions {
         store.commit("set_user_state", "request_pending");
       })
       .catch((error) => {
-        store.commit("set_user_state", "error");
+        store.commit("set_user_state", authError);
         store.commit("set_error", "invalid");
 
         //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
@@ -33,7 +34,6 @@ export default new (class AxiosFunctions {
   }
 
   handleLogin(user) {
-    console.log("(Axios) logging in");
     store.commit("request");
     return axios({
       url: "https://api.devicedieter.de/login",
@@ -41,15 +41,16 @@ export default new (class AxiosFunctions {
       method: "POST",
     })
       .then((response) => {
+        localStorage.setItem("token", response.data.token);
         this.setData(response);
         store.commit("set_login_state", true);
-        store.commit("set_user_state", "auth_success");
+        store.commit("set_user_state", authSuccess);
       })
       .catch((error) => {
         if (error.response.data.code.includes("INVALID_CREDENTIALS")) {
           store.commit("set_error", ["Fehlerhafte Zugangsdaten!"]);
         }
-        store.commit("set_user_state", "error");
+        store.commit("set_user_state", authError);
         //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
       });
   }
