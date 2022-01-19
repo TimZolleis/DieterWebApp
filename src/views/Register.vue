@@ -102,7 +102,7 @@
         <div
           class="space-y-12 rounded bg-redbutton bg-opacity-40 border border-redbutton mt-12"
         >
-          <p class="text-white text-center px-4 py-3">Aus Gründen</p>
+          <p class="text-white text-center px-4 py-3">{{ errors }}</p>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@
 <script>
 import formObject from "@/components/formObject";
 import { mapGetters } from "vuex";
-import { pending } from "@/JS/models/loadingStates";
+import { authError, pending } from "@/JS/models/loadingStates";
 import store from "@/store";
 export default {
   name: "Register",
@@ -120,6 +120,7 @@ export default {
     return {
       pending: false,
       failed: false,
+      errors: [],
       email: "",
     };
   },
@@ -145,10 +146,13 @@ export default {
       console.log(err);
     },
     handleValue(value) {
+      if(value === authError){
+        this.failed = true;
+        this.errors = store.getters.getError
+
+      }
       if (value === pending) {
-        this.pending = true;
         this.email = store.getters.getEmail;
-        console.log("pending");
       }
     },
   },

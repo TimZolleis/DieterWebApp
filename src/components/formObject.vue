@@ -89,7 +89,6 @@ export default {
     handleValue(val) {
       if (val === loading) {
         store.commit("set_user_state", valid);
-        console.log("valid");
         ValidateForm.validate(this.UserData, this.$route.name.toLowerCase());
       }
       if (val === authError) {
@@ -98,16 +97,11 @@ export default {
         this.errors = store.getters.getError;
       }
       if (val === valid) {
-        console.log("pending");
         delete this.UserData["passwordComparison"];
         AxiosFunctions.handleAction(
           this.UserData,
           this.$route.name.toLowerCase()
         );
-      }
-      if (val === pending) {
-        console.log("registered");
-        console.log(store.getters.getEmail);
       }
       if (val === authSuccess) {
         this.$router.push("/");

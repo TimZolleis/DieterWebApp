@@ -44,7 +44,6 @@ const routes = [
     meta: {
       public: true,
     },
-    props: (route) => ({ query: route.query.id }),
   },
 ];
 const router = createRouter({
@@ -67,7 +66,6 @@ router.beforeEach((to, from, next) => {
         },
       })
       .then((response) => {
-        console.log(response);
         next();
       })
       .catch((error) => {
