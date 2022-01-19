@@ -4,6 +4,7 @@ import Login from "@/views/Login";
 import Register from "@/views/Register";
 import Intern from "@/views/Intern";
 import axios from "axios";
+import Verify from "@/views/Verify";
 const routes = [
   {
     path: "/",
@@ -35,6 +36,15 @@ const routes = [
     path: "/intern",
     name: "Intern",
     component: Intern,
+  },
+  {
+    path: "/verify",
+    name: "Verify",
+    component: Verify,
+    meta: {
+      public: true,
+    },
+    props: (route) => ({ query: route.query.id }),
   },
 ];
 const router = createRouter({

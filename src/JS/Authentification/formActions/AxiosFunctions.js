@@ -2,7 +2,12 @@ import store from "@/store";
 import axios from "axios";
 import { error } from "autoprefixer/lib/utils";
 import { data } from "autoprefixer";
-import { authError, authSuccess } from "@/JS/models/loadingStates";
+import {
+  authError,
+  authSuccess,
+  invalid,
+  pending,
+} from "@/JS/models/loadingStates";
 
 export default new (class AxiosFunctions {
   async handleAction(user, route) {
@@ -15,19 +20,21 @@ export default new (class AxiosFunctions {
   }
 
   async handleRegister(user) {
-    store.commit("request");
     await axios({
       url: "https://api.devicedieter.de/register",
       data: user,
       method: "POST",
     })
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        store.commit("set_user_state", "request_pending");
+        store.commit("set_email", user.email);
+        this.setData(response);
+        store.commit("set_user_state", pending);
       })
       .catch((error) => {
+        if (error.response.data.code.includes("USERNAME_TAKEN")) {
+          store.commit("set_error", ["Benutzername vergeben!"]);
+        }
         store.commit("set_user_state", authError);
-        store.commit("set_error", "invalid");
 
         //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
       });

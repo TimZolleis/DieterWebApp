@@ -1,5 +1,5 @@
 <template>
-  <div class="grid place-items-center h-screen h-32" v-if="!registered">
+  <div class="grid place-items-center h-screen h-32" v-if="!pending">
     <div class="max-w-xl w-full space-y-2 bg-boxcolor rounded-2xl py-6 px-14">
       <div>
         <img
@@ -27,18 +27,13 @@
         <form-object
           @registered="registerSuccess"
           @failed="handleError"
-          @ready="
-            (UserData) => {
-              Value.push(UserData);
-            }
-          "
           :store="getRegisterData"
           :buttontext="'Register'"
         ></form-object>
       </div>
     </div>
   </div>
-  <div v-if="registered" class="grid place-items-center h-screen h-32">
+  <div v-if="pending" class="grid place-items-center h-screen h-32">
     <div
       class="max-w-xl w-full space-y-2 bg-formbackround border-green-500 border rounded-2xl py-6 px-14"
     >
@@ -117,17 +112,29 @@
 <script>
 import formObject from "@/components/formObject";
 import { mapGetters } from "vuex";
+import { pending } from "@/JS/models/loadingStates";
+import store from "@/store";
 export default {
   name: "Register",
   data() {
     return {
-      registered: false,
+      pending: false,
       failed: false,
-      email: "tim@zolleis.net",
-      Value: [],
+      email: "",
     };
   },
   computed: mapGetters(["getRegisterData"]),
+  created() {
+    this.unwatch = store.watch(
+      (state, getters) => getters.getUserState,
+      (newValue, oldValue) => {
+        this.handleValue(newValue);
+      }
+    );
+  },
+  beforeUnmount() {
+    this.unwatch();
+  },
   methods: {
     registerSuccess(email) {
       this.registered = true;
@@ -136,6 +143,13 @@ export default {
     handleError(err) {
       this.failed = true;
       console.log(err);
+    },
+    handleValue(value) {
+      if (value === pending) {
+        this.pending = true;
+        this.email = store.getters.getEmail;
+        console.log("pending");
+      }
     },
   },
   components: {

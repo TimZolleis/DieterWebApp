@@ -4,11 +4,13 @@ const state = {
   userState: "",
   loggedIn: false,
   errors: [],
+  email: "",
 };
 
 const getters = {
   getUserState: (state) => state.userState,
   getError: (state) => state.errors,
+  getEmail: (state) => state.email,
 };
 
 const actions = {};
@@ -22,6 +24,9 @@ const mutations = {
   },
   set_error(state, payload) {
     state.errors = payload;
+  },
+  set_email(state, payload) {
+    state.email = payload;
   },
 };
 
