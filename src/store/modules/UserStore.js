@@ -1,16 +1,16 @@
-const state = {
-  user: {},
+export const state = {
+  userStoreState: {},
 };
 
 const getters = {
-  getUserData: (state) => state.user,
+  getUserData: (state) => state.userStoreState,
 };
 
 const actions = {};
 
 const mutations = {
   set_user(state, payload) {
-    state.user = payload;
+    state.userStoreState = payload;
   },
 };
 

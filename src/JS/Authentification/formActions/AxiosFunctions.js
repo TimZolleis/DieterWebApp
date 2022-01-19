@@ -37,8 +37,6 @@ export default new (class AxiosFunctions {
           store.commit("set_error", ["Benutzername vergeben!"]);
         }
         store.commit("set_user_state", authError);
-
-        //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
       });
   }
 
@@ -58,7 +56,6 @@ export default new (class AxiosFunctions {
           store.commit("set_error", ["Fehlerhafte Zugangsdaten!"]);
         }
         store.commit("set_user_state", authError);
-        //TODO: ERROR HANDLING BASED ON RESPONSE => ERRORHANDLING.JS
       });
   }
   setData(response) {

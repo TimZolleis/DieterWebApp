@@ -8,6 +8,11 @@
       >
       <router-link
         class="bg-redbutton py-4 px-6 rounded-2xl font-bold text-2xl text-white"
+        to="/intern"
+        >Intern</router-link
+      >
+      <router-link
+        class="bg-redbutton py-4 px-6 rounded-2xl font-bold text-2xl text-white"
         to="/register"
         >Register</router-link
       >

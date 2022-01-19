@@ -1,16 +1,18 @@
 <template>
-  <h3>This site is secret!</h3>
-  <button
-    class="rounded-full bg-red-600 py-2 px-4 items-center justify-center"
-    @click="logout"
+  <h3 class="text-redbutton">Hello {{ user.firstName }}</h3>
   >
-    Logut
-  </button>
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   name: "Intern",
+  computed: {
+    user() {
+      return this.$store.getters.getUserData;
+    },
+  },
   methods: {
     logout() {
       this.$store

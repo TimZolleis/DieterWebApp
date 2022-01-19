@@ -5,6 +5,7 @@ import Register from "@/views/Register";
 import Intern from "@/views/Intern";
 import axios from "axios";
 import Verify from "@/views/Verify";
+import ReadToken from "@/JS/Authentification/formActions/ReadToken";
 const routes = [
   {
     path: "/",

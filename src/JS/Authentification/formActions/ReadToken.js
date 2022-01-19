@@ -7,5 +7,6 @@ export default new (class ReadToken {
     const buff = new Buffer(split, "base64");
     const payload = JSON.parse(buff.toString("ascii"));
     store.commit("set_user", payload);
+    console.log(store.getters.getUserData);
   }
 })();
