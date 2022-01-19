@@ -8,6 +8,8 @@ import {
   invalid,
   pending,
 } from "@/JS/models/loadingStates";
+import UserStore from "@/store/modules/UserStore";
+import ReadToken from "@/JS/Authentification/formActions/ReadToken";
 
 export default new (class AxiosFunctions {
   async handleAction(user, route) {
@@ -41,16 +43,14 @@ export default new (class AxiosFunctions {
   }
 
   handleLogin(user) {
-    store.commit("request");
     return axios({
       url: "https://api.devicedieter.de/login",
       data: user,
       method: "POST",
     })
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
         this.setData(response);
-        store.commit("set_login_state", true);
+        ReadToken.parseToken();
         store.commit("set_user_state", authSuccess);
       })
       .catch((error) => {

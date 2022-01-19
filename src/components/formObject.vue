@@ -51,6 +51,7 @@ import {
   valid,
 } from "@/JS/models/loadingStates";
 import { mapState } from "vuex";
+import ReadToken from "@/JS/Authentification/formActions/ReadToken";
 
 export default {
   name: "Form",
