@@ -103,6 +103,10 @@ export default {
             this.failed = true;
             this.errors = ["Already verified!"]
           }
+          else{
+            this.failed = true;
+            this.errors = ["Invalid ID!"]
+          }
         });
     },
   },
