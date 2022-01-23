@@ -6,6 +6,7 @@ import Intern from "@/views/Intern";
 import axios from "axios";
 import Verify from "@/views/Verify";
 import ReadToken from "@/JS/Authentification/formActions/ReadToken";
+import Devices from "@/views/Devices/Devices";
 const routes = [
   {
     path: "/",
@@ -42,6 +43,14 @@ const routes = [
     path: "/verify",
     name: "Verify",
     component: Verify,
+    meta: {
+      public: true,
+    },
+  },
+  {
+    path: "/devices",
+    name: "Devices",
+    component: Devices,
     meta: {
       public: true,
     },
